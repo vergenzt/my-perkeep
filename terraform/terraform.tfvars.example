@@ -1,0 +1,31 @@
+# Copy to terraform.tfvars and edit. terraform.tfvars is gitignored.
+#
+# Secrets are better supplied via environment variables than written here:
+#
+#   export SYNOLOGY_PASSWORD='...'
+#   export TF_VAR_tailscale_authkey='tskey-auth-...'
+#   export TF_VAR_nas_otp_secret='...'        # only if DSM 2FA is on
+
+nas_host = "https://nas.local:5001"
+nas_user = "terraform"
+
+# DSM ships a self-signed certificate, so verification usually has to be off.
+nas_skip_cert_check = true
+
+# Your GHCR image, published by .github/workflows/build-image.yml.
+image = "ghcr.io/your-github-username/perkeep:v0.12"
+
+# Project directory, relative to the volume root. The /docker shared folder is
+# created by Container Manager on install; Terraform creates the rest.
+share_path = "/docker/perkeep"
+
+# Reachable at https://perkeep.<your-tailnet>.ts.net
+tailscale_hostname = "perkeep"
+
+# "full-access-to-tailnet" lets anyone on your tailnet in. Narrow it to a single
+# account with an email address instead:
+# tailscale_auth = "you@example.com"
+tailscale_auth = "full-access-to-tailnet"
+
+# Needs MagicDNS + HTTPS Certificates enabled for the tailnet.
+tailscale_https = true

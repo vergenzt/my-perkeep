@@ -1,0 +1,15 @@
+{
+    "auth": "tailscale:${tailscale_auth}",
+    "listen": "tailscale:${tailscale_hostname}",
+    "https": ${https},
+
+    "identity": ["_env", "$${PERKEEP_IDENTITY}"],
+    "identitySecretRing": ["_env", "$${PERKEEP_SECRING}"],
+
+    "blobPath": "${blob_path}",
+    "packRelated": ${pack_related},
+
+    "levelDB": "${index_path}",
+
+    "shareHandler": ${share_handler}
+}

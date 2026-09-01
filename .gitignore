@@ -1,0 +1,18 @@
+# Terraform
+# .terraform.lock.hcl is deliberately NOT ignored -- commit it to pin provider hashes.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Never commit these: they hold the DSM password and the Tailscale auth key.
+terraform.tfvars
+*.auto.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+.env
