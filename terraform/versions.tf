@@ -15,11 +15,4 @@ provider "synology" {
   password        = var.nas_password
   otp_secret      = var.nas_otp_secret
   skip_cert_check = var.nas_skip_cert_check
-
-  # DSM invalidates sessions aggressively; caching avoids re-authenticating
-  # (and re-consuming a TOTP step) on every plan.
-  session_cache = {
-    mode = "file"
-    path = pathexpand("~/.cache/terraform-synology")
-  }
 }

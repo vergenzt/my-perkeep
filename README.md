@@ -35,11 +35,14 @@ docker buildx build --platform linux/amd64 \
 
 `--platform linux/amd64` is not optional on an Apple Silicon Mac.
 
-Then:
+Then set the variables. Everything is documented in `terraform/variables.tf`;
+`nas_host`, `nas_user` and `image` have no usable defaults, and you will likely
+want `nas_skip_cert_check = true`, since DSM ships a self-signed certificate.
+Keep the secrets — `nas_password`, `tailscale_authkey`, and `nas_otp_secret` if
+DSM 2FA is on — out of tfvars and pass them through the environment:
 
 ```bash
 cd terraform
-cp terraform.tfvars.example terraform.tfvars   # edit it
 export SYNOLOGY_PASSWORD='...'
 export TF_VAR_tailscale_authkey='tskey-auth-...'
 terraform init && terraform apply

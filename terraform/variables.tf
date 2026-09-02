@@ -29,7 +29,7 @@ variable "nas_otp_secret" {
 variable "nas_skip_cert_check" {
   description = "Skip TLS verification when talking to DSM. Usually required, since DSM ships a self-signed certificate."
   type        = bool
-  default     = true
+  default     = false
 }
 
 ########################################
@@ -82,6 +82,31 @@ variable "image" {
 # Tailscale
 ########################################
 
+variable "tailscale_domain" {
+  description = "Tailnet domain (independent of perkeep service), e.g. foo-bar.ts.net"
+  type        = string
+
+  validation {
+    # A value containing a path separator is interpreted by Perkeep as a state
+    # directory rather than a hostname, which would silently not do what you want.
+    condition     = can(regex("^[a-z0-9][a-z0-9-]*\\.ts\\.net$", var.tailscale_domain))
+    error_message = "must be a domain ending in `.ts.net`"
+  }
+}
+
+variable "tailscale_hostname" {
+  description = "Tailnet hostname for the node. The UI ends up at https://<subdomain>.<domain>"
+  type        = string
+  default     = "perkeep"
+
+  validation {
+    # A value containing a path separator is interpreted by Perkeep as a state
+    # directory rather than a hostname, which would silently not do what you want.
+    condition     = can(regex("^[a-z0-9][a-z0-9-]*$", var.tailscale_hostname))
+    error_message = "must be a DNS label: lowercase alphanumerics and hyphens, no slashes."
+  }
+}
+
 variable "tailscale_authkey" {
   description = <<-EOT
     Tailscale auth key used to register the node on first boot. Generate at
@@ -97,19 +122,6 @@ variable "tailscale_authkey" {
   type        = string
   sensitive   = true
   default     = null
-}
-
-variable "tailscale_hostname" {
-  description = "Tailnet hostname for the node. The UI ends up at https://<hostname>.<tailnet>.ts.net."
-  type        = string
-  default     = "perkeep"
-
-  validation {
-    # A value containing a path separator is interpreted by Perkeep as a state
-    # directory rather than a hostname, which would silently not do what you want.
-    condition     = can(regex("^[a-z0-9][a-z0-9-]*$", var.tailscale_hostname))
-    error_message = "tailscale_hostname must be a DNS label: lowercase alphanumerics and hyphens, no slashes."
-  }
 }
 
 variable "tailscale_auth" {

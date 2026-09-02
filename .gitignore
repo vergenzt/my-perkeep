@@ -8,11 +8,10 @@ crash.log
 crash.*.log
 
 # Never commit these: they hold the DSM password and the Tailscale auth key.
+.env*
 terraform.tfvars
 *.auto.tfvars
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
-.env
